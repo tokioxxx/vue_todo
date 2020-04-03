@@ -1,2 +1,2 @@
-@import './reset.scss';
-@import './base.scss';
+@import './reset.scss';//ブラウザによって異なるデフォルトのCSSを打ち消してブラウザ間の表示を揃えるためのファイル
+@import './base.scss';//wrapper や header、footer など、ペースとなる部分のCSSを書く
