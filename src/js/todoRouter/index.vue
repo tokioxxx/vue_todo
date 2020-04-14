@@ -3,7 +3,7 @@
     <div class="page-description">
       <p>Todo with Routing of vue-router</p>
     </div>
-    <router-view />
+    <router-view /><!-- ルーティングの指定をしたファイルの「routes.js」を表示に反映.上記のコードはURLが変わろうが表示され続ける。 -->
   </div>
 </template>
 

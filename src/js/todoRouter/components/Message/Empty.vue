@@ -1,5 +1,5 @@
 <template lang="html">
-  <p class="empty">{{ emptyMessage }}</p>
+  <p class="empty">{{ emptyMessage }}</p
 </template>
 
 <script>

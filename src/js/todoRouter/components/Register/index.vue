@@ -25,6 +25,7 @@
       />
     </div>
     <div class="register__submit">
+      <!-- ボタンが押された時idがnullの場合addTodoイベントが親で発火する -->
       <button
         class="register__submit__btn"
         type="button"

@@ -1,6 +1,7 @@
 <template lang="html">
   <app-wrapper :todos="todos">
     <app-navi />
+    <!-- todoが未完了の場合に発火、フォームが記入されるとregisterコンポーネントに内容を送りdataのtarget.todoにも同じものが入る -->
     <app-register
       v-if="todoFilter !== 'completedTodos'"
       :todo-id="targetTodo.id"
@@ -20,10 +21,12 @@
       :props名="dataの値" => 子へ渡すprops
       @update:props名="dataの値 = 上の「propsに指定したい値」" => 子のイベント購読
     -->
+    <!-- data(状態管理)のerrorMessageがあれば、「ErrorMessage」コンポーネントが表示 -->
     <app-error-message
       v-if="errorMessage"
       :error-message="errorMessage"
     />
+    <!-- data(状態管理)のfilteredTodosがあれば表示.「List」コンポーネントにtodosという名前でdata(状態管理)のfilteredTodosを渡しています-->
     <template v-slot:todos>
       <app-list
         v-if="filteredTodos.length"
@@ -32,6 +35,7 @@
         @showEditor="showEditor"
         @deleteTodo="deleteTodo"
       />
+      <!-- filteredTodosが空ならば「EmptyMessage」コンポーネントが表示 -->
       <app-empty-message
         v-else
         :empty-message="emptyMessage"
@@ -50,7 +54,7 @@ import Register from 'TodoRouterDir/components/Register';
 import List from 'TodoRouterDir/components/List';
 
 export default {
-  components: {
+  components: {//コンポーネントとしてしようする指定
     appWrapper: Wrapper,
     appNavi: Navi,
     appErrorMessage: ErrorMessage,
@@ -88,9 +92,9 @@ export default {
     },
   },
   created() {
-    axios.get('http://localhost:3000/api/todos/').then(({ data }) => {
-      this.todos = data.todos.reverse();
-      this.setFilter();
+    axios.get('http://localhost:3000/api/todos/').then(({ data }) => {//ページが読み込まれた時にURLにリクエストを送り
+      this.todos = data.todos.reverse();//data(状態管理)todosに順序を逆にした配列を入れる
+      this.setFilter();//rotes.jsのnameによってdata(状態管理)のfilteredTodosの値を変えている
     }).catch((err) => {
       this.showError(err);
       this.setFilter();
@@ -100,15 +104,15 @@ export default {
     setFilter() {
       const routeName = this.$route.name;
       this.todoFilter = routeName;
-      if (routeName === 'completedTodos') {
+      if (routeName === 'completedTodos') {//nameがcompletedTodos(完了済)だったらcompleted: trueのTodoだけの配列を入れる
         this.filteredTodos = this.todos.filter(todo => todo.completed);
       } else if (routeName === 'incompleteTodos') {
-        this.filteredTodos = this.todos.filter(todo => !todo.completed);
+        this.filteredTodos = this.todos.filter(todo => !todo.completed);//nameがincompleteTodosだったらcompleted: falseのTodoだけの配列
       } else {
-        this.filteredTodos = this.todos;
+        this.filteredTodos = this.todos;//nameが他の場合(全て表示)そのままtodosのを入れる
       }
 
-      if (!this.filteredTodos.length) this.setEmptyMessage();
+      if (!this.filteredTodos.length) this.setEmptyMessage();//空ならsetEmptyMessageで、それぞれのURLに適したメッセージがdata(状態管理)のemptyMessageに代入される
     },
     setEmptyMessage() {
       if (this.todoFilter === 'completedTodo') {
@@ -138,7 +142,7 @@ export default {
       }
     },
     addTodo() {
-      if (!this.targetTodo.title || !this.targetTodo.detail) {
+      if (!this.targetTodo.title || !this.targetTodo.detail) {//タイトルか詳細の入力フォームが空で登録するボタンがクリックされたら、エラーを表示
         this.errorMessage = 'タイトルと内容はどちらも必須項目です。';
         return;
       }
@@ -147,7 +151,7 @@ export default {
         detail: this.targetTodo.detail,
       });
       axios.post('http://localhost:3000/api/todos/', postTodo).then(({ data }) => {
-        this.todos.unshift(data);
+        this.todos.unshift(data);//通信成功したら返ってきたdataをdata(状態管理)のtodosの配列に加える。
         this.targetTodo = this.initTargetTodo();
         this.hideError();
       }).catch((err) => {

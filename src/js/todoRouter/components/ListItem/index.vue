@@ -2,6 +2,7 @@
   <li :class="['todo__item', todoCompleted ? 'is-completed' : '']">
     <div class="todo__item__inner">
       <div class="todo__item__completed">
+        <!-- 完了未完了ボタンが押されると親コンポーネントでchangeCompletedイベントが発火 -->
         <button
           class="todo__item__completed__btn"
           type="button"
@@ -41,10 +42,10 @@
 
 <script>
 export default {
-  props: {
+  props: {//listからtodoのデータを取得
     todoTitle: {
-      type: String,
-      default: '',
+      type: String,//propsの型の指定
+      default: '',//何も渡されなかったときのデフォルトの値
     },
     todoDetail: {
       type: String,

@@ -8,7 +8,7 @@ console.log('nodeEnv ==> ', nodeEnv);
 console.log('isDev ==> ', isDev);
 console.log(path.resolve(__dirname, 'src/js/components'));
 
-const src = path.resolve(__dirname, './src');
+const src = path.resolve(__dirname, './src');//第１引数は絶対パスでvue_todoまでのパスが入っていて第２引数は相対パスでwebpackのファイルからsrcまでのパス
 const dist = path.resolve(__dirname, './public');
 
 const config = {
@@ -17,7 +17,7 @@ const config = {
   resolve: {
     extensions: ['.vue', '.js', '.json'],
     alias: {
-      TodoDir: `${src}/js/todo`,
+      TodoDir: `${src}/js/todo`,//TodoDirと`${src}/js/todo`
       TodoRouterDir: `${src}/js/todoRouter`,
       TodoVuexDir: `${src}/js/todoVuex`,
       VuexSample: `${src}/js/todoVuex_sample`,
@@ -31,8 +31,8 @@ const config = {
     inline: true,
     hot: true,
     port: 8080,
-    contentBase: dist,
-    // historyApiFallback: true,
+    contentBase: dist,//サーバーを立ち上げるときのルートフォルダの指定、publicファイルを開く様にする
+    historyApiFallback: true,//404リクエスト(サーバーが見つけられないエラー)の際はすべてindex.htmlを返すようにします．この設定が有効でなければ，トップページでリロードした場合に，404 cannot get /about などとエラーとなります．
   },
   entry: {
     index: `${src}/js/index.js`

@@ -217,9 +217,9 @@ export default {
         title: this.targetTodo.title,//タイトル取得
         detail: this.targetTodo.detail,//詳細取得
       }).then(({ data }) => {
-        this.todos = this.todos.map((todo) => {//新しいtitleとdetailが入っているオブジェクトが返って来ているのでdata(状態管理)のtodosと置き換える
-          if (todo.id === this.targetTodo.id) return data;
-          return todo;
+        this.todos = this.todos.map((todo) => {//mapは配列の繰り返し処理
+          if (todo.id === this.targetTodo.id) return data;//dataのidと取得したidが一致したらdataを返し、一致するものがなかったらtodを返す。
+          return todo;//新しいtitleとdetailが入っているオブジェクトだけが返って来ているのでdata(状態管理)のtodosと置き換える
         });
         this.targetTodo = this.initTargetTodo();//targetTodoのなかを空にする
         this.hideError();//エラーメッセージ削除
